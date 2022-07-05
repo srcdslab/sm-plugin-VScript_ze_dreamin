@@ -203,6 +203,7 @@ public void OnRoundStart(Event hEvent, const char[] sEvent, bool bDontBroadcast)
 public Action Credits(Handle timer)
 {
 	CPrintToChatAll("{pink}[VScripts] {white}Map using VScripts ported by Neon™");
+	return Plugin_Continue;
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -659,7 +660,7 @@ public int FindEntityByHammerID(int iHammerID)
 //----------------------------------------------------------------------------------------------------
 // Purpose:
 //----------------------------------------------------------------------------------------------------
-stock bool DispatchKeyFormat(int entity, const char[] key, const char[] value, any ...)
+stock void DispatchKeyFormat(int entity, const char[] key, const char[] value, any ...)
 {
 	char buffer[1024];
 	VFormat(buffer, sizeof(buffer), value, 4);
