@@ -46,10 +46,12 @@ public void VerifyMap()
 	char sCurrentMap[64];
 	GetCurrentMap(sCurrentMap, sizeof(sCurrentMap));
 
-	if (strncmp(sCurrentMap, "ze_dreamin_v2", 12, false) == 0)
+	char sMapName[255] = "ze_dreamin_v2";
+	if (strncmp(sCurrentMap, sMapName, strlen(sMapName), false) == 0)
 		g_bDream_V2 = true;
 
-	if (strncmp(sCurrentMap, "ze_dreamin_v3", 12, false) == 0)
+	sMapName = "ze_dreamin_v3";
+	if (strncmp(sCurrentMap, sMapName, strlen(sMapName), false) == 0)
 		g_bDream_V3 = true;
 
 	if (!g_bDream_V2 && !g_bDream_V3)
@@ -706,8 +708,6 @@ public void func_button_381396_display(const char[] output, int caller, int acti
 {
 	if (g_bDream_V2)
 		Display(30);
-	else
-		return;
 }
 
 //----------------------------------------------------------------------------------------------------
