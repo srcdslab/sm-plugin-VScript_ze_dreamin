@@ -16,7 +16,7 @@ public Plugin myinfo =
 	name        = "ze_dreamin VScript",
 	author      = "Neon, .Rushaway",
 	description = "",
-	version     = "2.0",
+	version     = "2.0.1",
 	url         = "https://steamcommunity.com/id/n3ontm"
 }
 
@@ -81,46 +81,50 @@ public void OnRoundStart(Event hEvent, const char[] sEvent, bool bDontBroadcast)
 	if (iEntity != INVALID_ENT_REFERENCE)
 		HookSingleEntityOutput(iEntity, "OnTimer", explo_maker_setan, false);
 
-	iEntity = FindEntityByTargetName("rtv_laser_timer");
-	if (iEntity != INVALID_ENT_REFERENCE)
-		HookSingleEntityOutput(iEntity, "OnTimer", rtv_laser_timer, false);
- 
-	iEntity = FindEntityByTargetName("rtv_th_timer");
-	if (iEntity != INVALID_ENT_REFERENCE)
-		HookSingleEntityOutput(iEntity, "OnTimer", rtv_th_timer, false);
+	// These entity are only available in ze_dreamin_v3
+	if (g_bDream_V3)
+	{
+		iEntity = FindEntityByTargetName("rtv_laser_timer");
+		if (iEntity != INVALID_ENT_REFERENCE)
+			HookSingleEntityOutput(iEntity, "OnTimer", rtv_laser_timer, false);
 
+		iEntity = FindEntityByTargetName("rtv_th_timer");
+		if (iEntity != INVALID_ENT_REFERENCE)
+			HookSingleEntityOutput(iEntity, "OnTimer", rtv_th_timer, false);
+
+		iEntity = FindEntityByTargetName("case_1");
+		if (iEntity != INVALID_ENT_REFERENCE)
+		{
+			HookSingleEntityOutput(iEntity, "OnCase01", sbomb_1_Case01, false);
+			HookSingleEntityOutput(iEntity, "OnCase02", sbomb_1_Case02, false);
+			HookSingleEntityOutput(iEntity, "OnCase03", sbomb_1_Case03, false);
+			HookSingleEntityOutput(iEntity, "OnCase04", sbomb_1_Case04, false);
+		}
+
+		iEntity = FindEntityByTargetName("case_2");
+		if (iEntity != INVALID_ENT_REFERENCE)
+		{
+			HookSingleEntityOutput(iEntity, "OnCase01", sbomb_2_Case01, false);
+			HookSingleEntityOutput(iEntity, "OnCase02", sbomb_2_Case02, false);
+			HookSingleEntityOutput(iEntity, "OnCase03", sbomb_2_Case03, false);
+			HookSingleEntityOutput(iEntity, "OnCase04", sbomb_2_Case04, false);
+		}
+
+		iEntity = FindEntityByTargetName("case_3");
+		if (iEntity != INVALID_ENT_REFERENCE)
+		{
+			HookSingleEntityOutput(iEntity, "OnCase01", sbomb_3_Case01, false);
+			HookSingleEntityOutput(iEntity, "OnCase02", sbomb_3_Case02, false);
+			HookSingleEntityOutput(iEntity, "OnCase03", sbomb_3_Case03, false);
+			HookSingleEntityOutput(iEntity, "OnCase04", sbomb_3_Case04, false);
+		}
+	}
+ 
 	iEntity = FindEntityByTargetName("linelaser_random");
 	if (iEntity != INVALID_ENT_REFERENCE)
 	{
 		HookSingleEntityOutput(iEntity, "OnCase01", linelaser_maker_left, false);
 		HookSingleEntityOutput(iEntity, "OnCase02", linelaser_maker_right, false);
-	}
-
-	iEntity = FindEntityByTargetName("case_1");
-	if (iEntity != INVALID_ENT_REFERENCE)
-	{
-		HookSingleEntityOutput(iEntity, "OnCase01", sbomb_1_Case01, false);
-		HookSingleEntityOutput(iEntity, "OnCase02", sbomb_1_Case02, false);
-		HookSingleEntityOutput(iEntity, "OnCase03", sbomb_1_Case03, false);
-		HookSingleEntityOutput(iEntity, "OnCase04", sbomb_1_Case04, false);
-	}
- 
-	iEntity = FindEntityByTargetName("case_2");
-	if (iEntity != INVALID_ENT_REFERENCE)
-	{
-		HookSingleEntityOutput(iEntity, "OnCase01", sbomb_2_Case01, false);
-		HookSingleEntityOutput(iEntity, "OnCase02", sbomb_2_Case02, false);
-		HookSingleEntityOutput(iEntity, "OnCase03", sbomb_2_Case03, false);
-		HookSingleEntityOutput(iEntity, "OnCase04", sbomb_2_Case04, false);
-	}
- 
-	iEntity = FindEntityByTargetName("case_3");
-	if (iEntity != INVALID_ENT_REFERENCE)
-	{
-		HookSingleEntityOutput(iEntity, "OnCase01", sbomb_3_Case01, false);
-		HookSingleEntityOutput(iEntity, "OnCase02", sbomb_3_Case02, false);
-		HookSingleEntityOutput(iEntity, "OnCase03", sbomb_3_Case03, false);
-		HookSingleEntityOutput(iEntity, "OnCase04", sbomb_3_Case04, false);
 	}
 
 	iEntity = FindEntityByTargetName("totem_random");
@@ -152,9 +156,12 @@ public void OnRoundStart(Event hEvent, const char[] sEvent, bool bDontBroadcast)
 	if (iEntity != INVALID_ENT_REFERENCE)
 		HookSingleEntityOutput(iEntity, "OnStartTouch", trigger_once_386004_display, false);
 
-	iEntity = FindEntityByHammerID(381396);
-	if (iEntity != INVALID_ENT_REFERENCE)
-		HookSingleEntityOutput(iEntity, "OnPressed", func_button_381396_display, false);
+	if (g_bDream_V2)
+	{
+		iEntity = FindEntityByHammerID(381396);
+		if (iEntity != INVALID_ENT_REFERENCE)
+			HookSingleEntityOutput(iEntity, "OnPressed", func_button_381396_display, false);
+	}
 
 	iEntity = FindEntityByHammerID(381463);
 	if (iEntity != INVALID_ENT_REFERENCE)
@@ -443,9 +450,6 @@ public void spike_maker_top(const char[] output, int caller, int activator, floa
 //----------------------------------------------------------------------------------------------------
 public void rtv_laser_timer(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	float fOrigin[3];
 	fOrigin[0] = GetRandomFloat(6300.0, 8350.0);
 	fOrigin[1] = GetRandomFloat(-1850.0, 220.0);
@@ -471,9 +475,6 @@ public void rtv_laser_timer(const char[] output, int caller, int activator, floa
 //----------------------------------------------------------------------------------------------------
 public void rtv_th_timer(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	float fOrigin[3];
 	fOrigin[0] = GetRandomFloat(6300.0, 8350.0);
 	fOrigin[1] = GetRandomFloat(-1850.0, 220.0);
@@ -494,9 +495,6 @@ public void rtv_th_timer(const char[] output, int caller, int activator, float d
 //----------------------------------------------------------------------------------------------------
 public void sbomb_1_Case01(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_1");
  
@@ -509,9 +507,6 @@ public void sbomb_1_Case01(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_1_Case02(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_1");
  
@@ -524,9 +519,6 @@ public void sbomb_1_Case02(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_1_Case03(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_1");
  
@@ -539,9 +531,6 @@ public void sbomb_1_Case03(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_1_Case04(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_1");
  
@@ -554,9 +543,6 @@ public void sbomb_1_Case04(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_2_Case01(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_2");
  
@@ -569,9 +555,6 @@ public void sbomb_2_Case01(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_2_Case02(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_2");
  
@@ -584,9 +567,6 @@ public void sbomb_2_Case02(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_2_Case03(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_2");
  
@@ -599,9 +579,6 @@ public void sbomb_2_Case03(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_2_Case04(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_2");
  
@@ -614,9 +591,6 @@ public void sbomb_2_Case04(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_3_Case01(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_3");
  
@@ -629,9 +603,6 @@ public void sbomb_3_Case01(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_3_Case02(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_3");
  
@@ -644,9 +615,6 @@ public void sbomb_3_Case02(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_3_Case03(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_3");
  
@@ -659,9 +627,6 @@ public void sbomb_3_Case03(const char[] output, int caller, int activator, float
 //----------------------------------------------------------------------------------------------------
 public void sbomb_3_Case04(const char[] output, int caller, int activator, float delay)
 {
-	if (g_bDream_V2)
-		return;
-
 	int iEntity = INVALID_ENT_REFERENCE;
 	iEntity = FindEntityByTargetName("sbomb_3");
  
